@@ -89,6 +89,27 @@ int ksw_gg(void *km, int qlen, const uint8_t *query, int tlen, const uint8_t *ta
 int ksw_gg2(void *km, int qlen, const uint8_t *query, int tlen, const uint8_t *target, int8_t m, const int8_t *mat, int8_t gapo, int8_t gape, int w, int *m_cigar_, int *n_cigar_, uint32_t **cigar_);
 int ksw_gg2_sse(void *km, int qlen, const uint8_t *query, int tlen, const uint8_t *target, int8_t m, const int8_t *mat, int8_t gapo, int8_t gape, int w, int *m_cigar_, int *n_cigar_, uint32_t **cigar_);
 
+// EXPONENTIAL SEARCH VARIANTS
+// For global alignment these run in O(ns) instead of O(n^2).
+// NOTE: I'm not sure how useful these are for variants other than global alignment.
+// TODO: Find a reasonable initial value.
+// TODO: The bound of score <= q+e*w can be improved by roughly a factor two
+// by using separate upper and lower bands, depending on the query and
+// target length.
+// The `w` argument is unused and only present for consistency with the previous functions.
+void ksw_extz_band_doubling(
+	void *km, int qlen, const uint8_t *query, int tlen, const uint8_t *target, int8_t m, const int8_t *mat, int8_t q, int8_t e, int _w, int zdrop, int flag, ksw_extz_t *ez);
+void ksw_extz2_sse_band_doubling(
+	void *km, int qlen, const uint8_t *query, int tlen, const uint8_t *target, int8_t m, const int8_t *mat, int8_t q, int8_t e, int _w, int zdrop, int end_bonus, int flag, ksw_extz_t *ez);
+int ksw_gg_band_doubling(
+	void *km, int qlen, const uint8_t *query, int tlen, const uint8_t *target, int8_t m, const int8_t *mat, int8_t gapo, int8_t gape, int _w, int *m_cigar_, int *n_cigar_, uint32_t **cigar_);
+int ksw_gg2_band_doubling(
+	void *km, int qlen, const uint8_t *query, int tlen, const uint8_t *target, int8_t m, const int8_t *mat, int8_t gapo, int8_t gape, int _w, int *m_cigar_, int *n_cigar_, uint32_t **cigar_);
+int ksw_gg2_sse_band_doubling(
+	void *km, int qlen, const uint8_t *query, int tlen, const uint8_t *target, int8_t m, const int8_t *mat, int8_t gapo, int8_t gape, int _w, int *m_cigar_, int *n_cigar_, uint32_t **cigar_);
+
+
+
 void *ksw_ll_qinit(void *km, int size, int qlen, const uint8_t *query, int m, const int8_t *mat);
 int ksw_ll_i16(void *q, int tlen, const uint8_t *target, int gapo, int gape, int *qe, int *te);
 
