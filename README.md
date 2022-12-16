@@ -1,3 +1,8 @@
+## Fork status
+
+This fork adds exponential doubling for $O(ns)$ global alignment instead of the
+$O(n^2)$ default.
+
 ## Introduction
 
 KSW2 is a library to align a pair of biological sequences based on dynamic
